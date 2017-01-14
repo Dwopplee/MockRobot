@@ -9,6 +9,8 @@
 #include "RobotMock.hpp"
 #include "Timer.hpp"
 
+#include <iostream>
+
 enum class State {
 	idle,
 	opening,
@@ -27,48 +29,41 @@ int main() {
     	// State machine logic goes here. Recommend switch-case structure.
     	switch(state){
     	case State::idle:
-    		std::cout<<"entered idle state";
-    		robot.SetSetpoint(2);
-    		while(robot.GetPressed() == false){
-
-
+    		std::cout<<"entered idle state \n";
+    		robot.SetSetpoint(28.8);
+    		if(robot.GetPressed() == true){
+    			if(robot.AtSetpoint() == true){
+    				state = State::idle;
+    			}
     		}
-    		while(robot.AtSetpoint() == false){
-
-    		}
-    		state State::idle;
     		break;
     	case State::opening:
-    		std::cout<<"entered opening state";
+    		std::cout<<"entered opening state \n";
     		robot.SetClaw(false);
-    		while(robot.SetClaw == true){
-
+    		if(robot.GetClaw() == false){
+    			state = State::dropping;
     		}
-    		state = State::dropping;
     		break;
     	case State::dropping:
-    		std::cout<<"entered dropping state";
-    		robot.SetSetpoint(1);
-    		while(robot.AtSetpoint() == false){
-
+    		std::cout<<"entered dropping state \n";
+    		robot.SetSetpoint(14.4);
+    		if(robot.AtSetpoint() == true){
+    			state = State::closing;
     		}
-    		state = State::closing;
     		break;
     	case State::closing:
-    		std::cout<<"entered closing state";
+    		    		std::cout<<"entered closing state \n";
     		robot.SetClaw(true);
-    		while(robot.GetClaw() == false){
-
+    		if(robot.GetClaw() == true){
+    			state = State::lifting;
     		}
-    		state = State::lifting;
     		break;
     	case State::lifting:
-    		std::cout<<"entered lifting state";
-    		robot.SetSetpoint(2);
-    		while(robot.AtSetpoint() == false){
-
+    		std::cout<<"entered lifting state \n";
+    		robot.SetSetpoint(28.8);
+    		if(robot.AtSetpoint() == true){
+    			state = State::idle;
     		}
-    		state = State::idle;
     		break;
     	}
     }
